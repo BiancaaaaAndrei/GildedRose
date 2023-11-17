@@ -3,35 +3,49 @@ import java.util.Arrays;
 public class GildedRose {
     Item[] items;
     public GildedRose(Item[] items) {
+
         this.items = items;
     }
     public void updateQuality() {
-        Arrays.stream(items).forEach(this::updateItem);
+
+        Arrays.stream(items).forEach(this::updateItem); //updates the quality of all items
     }
+
+     //Updates the quality and sellIn values of an item based on its type.
     private void updateItem(Item item) {
+        // Step 1: Type Checking
         if (isNormalItem(item)) updateNormalItem(item);
         else if (isAgedBrie(item)) updateAgedBrie(item);
         else if (isBackstagePass(item)) updateBackstagePass(item);
-        else if (isConjuredItem(item)) updateConjuredItem(item); {
+        else if (isConjuredItem(item)) updateConjuredItem(item);
 
-        }
-
+        // Step 2: Update SellIn (if not a "Sulfuras" item)
         if (!isSulfuras(item)) decrementSellIn(item);
 
+        // Step 3: Handle Expired Item (if sellIn < 0)
         if (item.sellIn < 0) handleExpiredItem(item);
     }
+
     private boolean isNormalItem(Item item) {
+
         return !isAgedBrie(item) && !isBackstagePass(item) && !isSulfuras(item);
     }
+
     private boolean isAgedBrie(Item item) {
+
         return "Aged Brie".equals(item.name);
     }
+
     private boolean isBackstagePass(Item item) {
+
         return "Backstage passes to a TAFKAL80ETC concert".equals(item.name);
     }
+
     private boolean isSulfuras(Item item) {
+
         return "Sulfuras, Hand of Ragnaros".equals(item.name);
-        }
+    }
+
     private boolean isConjuredItem(Item item){
         return "Conjured Mana Cake".equals(item.name);
     }
@@ -43,6 +57,7 @@ public class GildedRose {
             item.quality--;
         }
     }
+
     private void updateAgedBrie(Item item) {
         if (item.quality < 50) item.quality++;
     }
@@ -52,11 +67,14 @@ public class GildedRose {
         if (item.sellIn < 11 && item.quality < 50) item.quality++;
         if (item.sellIn < 6 && item.quality < 50) item.quality++;
     }
+
     private void updateConjuredItem(Item item){
         updateNormalItem(item);
+
     }
     private void decrementSellIn(Item item) {
         item.sellIn--;}
+
     private void handleExpiredItem(Item item) {
         if (isNormalItem(item) && item.quality > 0 && !isSulfuras(item)) item.quality--;
         else if (isBackstagePass(item)) item.quality = 0;
