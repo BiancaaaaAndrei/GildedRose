@@ -80,4 +80,4 @@ class GildedRoseTest {
         assertEquals(50, app.items[0].quality);
     }
 
-}G
+}
